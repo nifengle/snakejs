@@ -55,5 +55,11 @@ View.prototype = {
   drawFruit: function( fruit ) {
     this.context.fillStyle = "Red";
     this.context.fillRect(fruit[0], fruit[1], 20, 20)
+  },
+
+  showStartScreen: function() {
+    this.context.font = "20px Courier New"
+    this.context.fillStyle = "Black"
+    this.context.fillText("Press Space to Start", 150, 300)
   }
 }

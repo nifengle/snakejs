@@ -7,7 +7,7 @@ function Game(){
   this.view = new View();
   this.snake = new Snake();
   this.score = 0;
-  this.playing = false;
+  this.state = "starting"
   this.fps = 8;
   this.fruit = [];
   this.keys = {
@@ -27,12 +27,17 @@ Game.prototype = {
   },
 
   play: function(){
-    this.renderGame();
 
-    if ( this.playing ) {
+    if ( this.state == "playing" ) {
       this.generateFruit();
       this.moveSnake();
       this.gameOverCheck();
+      this.renderGame();
+    } else if ( this.state == "starting" ) {
+      this.view.showStartScreen();
+    } else if ( this.state == "over" ) {
+      this.view.endGame();
+      this.view.showStartScreen();
     }
 
     setTimeout(this.play.bind(this), 1000/this.fps)
@@ -52,14 +57,37 @@ Game.prototype = {
 
   spaceEvent: function( event ){
     if ( event.keyCode == 32 ) {
-      this.playing = !this.playing;
+      event.preventDefault();
+      switch ( this.state ){
+        case "starting":
+          this.state = "playing";
+          break;
+        case "playing":
+          this.state = "paused";
+          break;
+        case "paused":
+          this.state = "playing";
+          break;
+        case "over":
+          this.reset();
+          // debugger
+      }
     }
+  },
+
+  reset: function(){
+    this.score = 0;
+    this.snake = new Snake();
+    this.snake.initialize();
+    this.view = new View();
+    this.lastKey = "Right"
+    this.state = "playing";
   },
 
   setDirection: function( event ){
     var direction = this.keys[event.keyCode];
 
-    if ( this.playing && this.lastKey!= direction && direction ) {
+    if ( this.state == "playing" && this.lastKey!= direction && direction ) {
       this.lastKey = direction;
       this.moveSnake( direction )
     }
@@ -72,8 +100,7 @@ Game.prototype = {
 
   gameOverCheck: function() {
     if ( this.collisionCheck() ) {
-      this.playing = false;
-      this.view.endGame();
+      this.state = "over";
     }
   },
 
