@@ -13,14 +13,14 @@ View.prototype = {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
 
-  drawSnake: function( snake ){
-
+  drawSnake: function( snake ) {
     for ( var i = 0; i < snake.segments.length; i++ ) {
       var segment = snake.segments[i];
       this.drawSection(segment);
     }
 
     this.context.fillStyle = "green";
+
     if ( snake.currentDirection >= 2) {
       this.context.fillRect(snake.headX, snake.headY-1, 22, 22)
     } else {
@@ -34,6 +34,26 @@ View.prototype = {
 
     this.context.fillStyle = "steelblue";
     this.context.fillRect(x, y, 20, 20);
-  }
+  },
 
+  endGame: function( score ) {
+    this.context.font = "bold 60px Courier New"
+    this.context.fillStyle = "Black"
+    this.context.fillText("Game Over", 105, 250)
+
+  },
+
+  showScore: function( score ) {
+    this.context.strokeStyle = "";
+    this.context.lineWidth = 40;
+    this.context.strokeRect(0,0,520,520)
+    this.context.font = "bold 18px Courier New"
+    this.context.fillStyle = "White"
+    this.context.fillText("Your Score: " + score, 20, 515)
+  },
+
+  drawFruit: function( fruit ) {
+    this.context.fillStyle = "Red";
+    this.context.fillRect(fruit[0], fruit[1], 20, 20)
+  }
 }

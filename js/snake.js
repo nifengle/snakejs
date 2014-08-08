@@ -54,8 +54,27 @@ Snake.prototype = {
         this.headY += 20;
         break;
     }
+
     this.segments.push( [this.headX, this.headY]);
     this.segments.shift();
+  },
 
+  collisionCheck: function(){
+
+    for (var i = 0; i < this.length - 1; i++) {
+      var segX = this.segments[i][0]
+      var segY = this.segments[i][1]
+
+      if ( segY == this.headY && segX == this.headX ) {
+        return true
+      }
+    }
+    return false
+  },
+
+  grow: function(){
+    this.segments.push( []);
+    this.setHead();
+    this.length ++
   }
 }
