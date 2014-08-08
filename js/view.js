@@ -26,7 +26,7 @@ View.prototype = {
   drawSection: function(segment){
     var x = segment[0];
     var y = segment[1];
-
+    // debugger
     this.context.fillRect(x, y, 10, 10)
   }
 

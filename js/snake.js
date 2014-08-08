@@ -1,7 +1,6 @@
 function Snake(){
-  this.height = 10;
-  this.headX = 30;
-  this.headY = 10;
+  this.headX = 50;
+  this.headY = 50;
   this.segments = [];
   this.directions = {
     Up: 0,
@@ -10,33 +9,34 @@ function Snake(){
     Right: 3,
     Opposite: [1,0,3,2]
   };
+  this.previousDirection = 2;
   this.currentDirection = 3;
-  this.length = 3;
+  this.length = 5;
 }
 
 Snake.prototype = {
   initialize: function(){
     for ( var i = 0; i < this.length; i++ ) {
       var x = (i * 10) + 10;
-      this.segments.push( [x, 10] );
+      this.segments.push( [x, this.headY] );
     }
   },
 
   move: function( newDirection ){
-    var newDirection = this.directions[newDirection] || this.currentDirection;
+
+    var newDirection = newDirection ? this.directions[newDirection] : this.currentDirection;
 
     if ( this.validMove( newDirection ) ) {
+      this.previousDirection = this.currentDirection;
       this.currentDirection = newDirection;
-      this.setHead();
-    } else {
-      debugger
     }
+
+    this.setHead();
+
   },
 
   validMove: function( newDirection ) {
-    var newDirCode = this.directions[newDirection];
-
-    return this.currentDirection != this.directions.Opposite[newDirCode]
+    return newDirection != this.directions.Opposite[this.currentDirection] && newDirection != this.currentDirection;
   },
 
   setHead: function(){

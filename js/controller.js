@@ -15,6 +15,7 @@ function Game(){
     39: 'Right',
     40: 'Down'
   }
+  this.lastKey = 'Right';
 }
 
 Game.prototype = {
@@ -40,7 +41,8 @@ Game.prototype = {
   moveSnake: function( event ){
     var direction = this.keys[event.keyCode];
 
-    if ( this.playing && direction ){
+    if ( this.playing && direction && this.lastKey != direction ){
+      this.lastKey = direction;
       this.snake.move( direction );
     }
   },
