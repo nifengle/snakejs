@@ -29,9 +29,8 @@ Game.prototype = {
   play: function(){
     if ( this.playing ) {
       this.generateFruit();
+      this.moveSnake();
       this.renderGame();
-      this.snake.move();
-      this.eatFruit();
       this.gameOverCheck();
     }
 
@@ -46,22 +45,27 @@ Game.prototype = {
   },
 
   bindEvents: function(){
-    $(document).on('keydown', this.moveSnake.bind( this ));
+    $(document).on('keydown', this.setDirection.bind( this ));
   },
 
-  moveSnake: function( event ){
+  setDirection: function( event ){
     var direction = this.keys[event.keyCode];
 
-    if ( this.playing && direction && this.lastKey != direction ){
+    if ( this.playing && this.lastKey!= direction && direction ) {
       this.lastKey = direction;
-      this.snake.move( direction );
+      this.moveSnake( direction )
     }
+  },
+
+  moveSnake: function( direction ){
+    this.snake.move( direction )
+    this.eatFruit();
   },
 
   gameOverCheck: function() {
     if ( this.collisionCheck() ) {
       this.playing = false;
-      this.view.endGame(this.score);
+      this.view.endGame();
     }
   },
 
@@ -75,11 +79,11 @@ Game.prototype = {
 
   generateFruit: function(){
     if ( this.fruit.length == 0 ) {
-      var x = Math.floor((Math.random() * 480) + 1);
-      var y = Math.floor((Math.random() * 480) + 1);
+      var x = Math.floor( ((Math.random() * 480) + 1) / 20 ) * 20
+      var y = Math.floor( ((Math.random() * 480) + 1) / 20 ) * 20
 
-      x = x - x%20 >= 40 ?  x - x%20 : 20;
-      y = y - y%20 > 40 ?  y - y%20 : 20;
+      x = x < 20 ? 20 : x
+      y = y < 20 ? 20 : y
       fruit = [x,y]
       if ( !this.snake.collisionCheck( fruit )){
         this.fruit = fruit;

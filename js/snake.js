@@ -55,8 +55,8 @@ Snake.prototype = {
         break;
     }
 
-    this.segments.push( [this.headX, this.headY]);
     this.segments.shift();
+    this.segments.push( [this.headX, this.headY]);
   },
 
   collisionCheck: function(){
@@ -73,8 +73,7 @@ Snake.prototype = {
   },
 
   grow: function(){
-    this.segments.push( []);
-    this.setHead();
+    this.segments.unshift([]);
     this.length ++
   }
 }

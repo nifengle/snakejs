@@ -36,7 +36,7 @@ View.prototype = {
     this.context.fillRect(x, y, 20, 20);
   },
 
-  endGame: function( score ) {
+  endGame: function() {
     this.context.font = "bold 60px Courier New"
     this.context.fillStyle = "Black"
     this.context.fillText("Game Over", 105, 250)
