@@ -34,11 +34,12 @@ Game.prototype = {
   },
 
   bindEvents: function(){
-    // $(document).on('keydown', this.moveSnake.bind( this ));
+    $(document).on('keydown', this.moveSnake.bind( this ));
   },
 
   moveSnake: function( event ){
     var direction = this.keys[event.keyCode];
+
     if ( this.playing && direction ){
       this.snake.move( direction );
     }

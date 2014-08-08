@@ -9,10 +9,6 @@ View.prototype = {
     this.bindEvents();
   },
 
-  bindEvents: function(){
-    // $(document).on('keydown', $(document).trigger())
-  },
-
   resetCanvas: function(){
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
@@ -30,7 +26,7 @@ View.prototype = {
   drawSection: function(segment){
     var x = segment[0];
     var y = segment[1];
-    // debugger
+
     this.context.fillRect(x, y, 10, 10)
   }
 

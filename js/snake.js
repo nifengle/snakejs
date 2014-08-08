@@ -10,8 +10,7 @@ function Snake(){
     Right: 3,
     Opposite: [1,0,3,2]
   };
-  this.previousDirection = this.directions.Left;
-  this.currentDirection = this.directions.Right;
+  this.currentDirection = 3;
   this.length = 3;
 }
 
@@ -24,20 +23,20 @@ Snake.prototype = {
   },
 
   move: function( newDirection ){
-    var newDirection = newDirection || this.currentDirection;
+    var newDirection = this.directions[newDirection] || this.currentDirection;
 
     if ( this.validMove( newDirection ) ) {
-      this.previousDirection = this.currentDirection;
       this.currentDirection = newDirection;
       this.setHead();
+    } else {
+      debugger
     }
   },
 
   validMove: function( newDirection ) {
     var newDirCode = this.directions[newDirection];
 
-    return newDirCode != this.currentDirection &&
-      this.currentDirection != this.directions.Opposite[newDirCode]
+    return this.currentDirection != this.directions.Opposite[newDirCode]
   },
 
   setHead: function(){
