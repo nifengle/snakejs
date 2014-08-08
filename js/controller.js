@@ -7,7 +7,7 @@ function Game(){
   this.view = new View();
   this.snake = new Snake();
   this.score = 0;
-  this.playing = true;
+  this.playing = false;
   this.fps = 8;
   this.fruit = [];
   this.keys = {
@@ -27,10 +27,11 @@ Game.prototype = {
   },
 
   play: function(){
+    this.renderGame();
+
     if ( this.playing ) {
       this.generateFruit();
       this.moveSnake();
-      this.renderGame();
       this.gameOverCheck();
     }
 
@@ -46,6 +47,13 @@ Game.prototype = {
 
   bindEvents: function(){
     $(document).on('keydown', this.setDirection.bind( this ));
+    $(document).on('keydown', this.spaceEvent.bind(this));
+  },
+
+  spaceEvent: function( event ){
+    if ( event.keyCode == 32 ) {
+      this.playing = !this.playing;
+    }
   },
 
   setDirection: function( event ){
@@ -81,10 +89,13 @@ Game.prototype = {
     if ( this.fruit.length == 0 ) {
       var x = Math.floor( ((Math.random() * 480) + 1) / 20 ) * 20
       var y = Math.floor( ((Math.random() * 480) + 1) / 20 ) * 20
+      var fruit;
 
       x = x < 20 ? 20 : x
       y = y < 20 ? 20 : y
+
       fruit = [x,y]
+
       if ( !this.snake.collisionCheck( fruit )){
         this.fruit = fruit;
       } else {
