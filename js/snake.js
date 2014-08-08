@@ -1,6 +1,6 @@
 function Snake(){
-  this.headX = 50;
-  this.headY = 50;
+  this.headX = 160;
+  this.headY = 40;
   this.segments = [];
   this.directions = {
     Up: 0,
@@ -11,13 +11,13 @@ function Snake(){
   };
   this.previousDirection = 2;
   this.currentDirection = 3;
-  this.length = 5;
+  this.length = 8;
 }
 
 Snake.prototype = {
   initialize: function(){
     for ( var i = 0; i < this.length; i++ ) {
-      var x = (i * 10) + 10;
+      var x = (i * 20) + 20;
       this.segments.push( [x, this.headY] );
     }
   },
@@ -42,16 +42,16 @@ Snake.prototype = {
   setHead: function(){
     switch ( this.currentDirection ) {
       case 3:
-        this.headX += 10;
+        this.headX += 20;
         break;
       case 2:
-        this.headX -= 10;
+        this.headX -= 20;
         break;
       case 0:
-        this.headY -= 10;
+        this.headY -= 20;
         break;
       case 1:
-        this.headY += 10;
+        this.headY += 20;
         break;
     }
     this.segments.push( [this.headX, this.headY]);

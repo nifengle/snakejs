@@ -8,7 +8,7 @@ function Game(){
   this.snake = new Snake();
   this.score = 0;
   this.playing = true;
-  this.speed = 500;
+  this.fps = 8;
   this.keys = {
     37: 'Left',
     38: 'Up',
@@ -31,7 +31,7 @@ Game.prototype = {
       this.view.drawSnake( this.snake );
       this.snake.move();
     }
-    setTimeout(this.play.bind(this), this.speed)
+    setTimeout(this.play.bind(this), 1000/this.fps)
   },
 
   bindEvents: function(){
@@ -43,6 +43,7 @@ Game.prototype = {
 
     if ( this.playing && direction && this.lastKey != direction ){
       this.lastKey = direction;
+      // this.view.resetCanvas();
       this.snake.move( direction );
     }
   },
