@@ -19,7 +19,7 @@ Snake.prototype = {
   initialize: function(){
     for ( var i = 0; i < this.length; i++ ) {
       var x = (i * 10) + 10;
-      this.segments.push([x, 10]);
+      this.segments.push( [x, 10] );
     }
   },
 
@@ -29,9 +29,7 @@ Snake.prototype = {
     if ( this.validMove( newDirection ) ) {
       this.previousDirection = this.currentDirection;
       this.currentDirection = newDirection;
-      this.headX += 10
-      this.segments.push([this.headX, this.headY])
-      this.segments.shift();
+      this.setHead();
     }
   },
 
@@ -42,24 +40,23 @@ Snake.prototype = {
       this.currentDirection != this.directions.Opposite[newDirCode]
   },
 
-  moveSegments: function(){
-    var direction = this.currentDirection;
+  setHead: function(){
+    switch ( this.currentDirection ) {
+      case 3:
+        this.headX += 10;
+        break;
+      case 2:
+        this.headX -= 10;
+        break;
+      case 0:
+        this.headY -= 10;
+        break;
+      case 1:
+        this.headY += 10;
+        break;
+    }
+    this.segments.push( [this.headX, this.headY]);
+    this.segments.shift();
 
-
-    // console.log(this.segments)
-    // for ( var i = 0; i < this.segments.length; i++ ) {
-    //   var segment = this.segments[i];
-    // debugger
-    //   switch ( direction ) {
-    //     case 3:
-    //       segment[0] += 10;
-    //     case 2:
-    //       segment[0] -= 10;
-    //     case 0:
-    //       segment[1] -= 10;
-    //     case 1:
-    //       segment[1] += 10;
-    //   }
-    // }
   }
 }

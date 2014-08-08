@@ -26,10 +26,9 @@ Game.prototype = {
 
   play: function(){
     if ( this.playing ) {
-      this.snake.move();
-
       this.view.resetCanvas();
       this.view.drawSnake( this.snake );
+      this.snake.move();
     }
     setTimeout(this.play.bind(this), this.speed)
   },
