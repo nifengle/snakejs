@@ -37,19 +37,19 @@ View.prototype = {
   },
 
   endGame: function() {
-    this.context.font = "bold 60px Courier New"
+    this.context.font = "60px Courier New"
     this.context.fillStyle = "Black"
     this.context.fillText("Game Over", 105, 250)
-
   },
 
-  showScore: function( score ) {
+  showStats: function( score, level ) {
     this.context.strokeStyle = "";
     this.context.lineWidth = 40;
     this.context.strokeRect(0,0,520,520)
-    this.context.font = "bold 18px Courier New"
+    this.context.font = "18px Courier New"
     this.context.fillStyle = "White"
     this.context.fillText("Your Score: " + score, 20, 515)
+    this.context.fillText("Level " + level, 20, 15)
   },
 
   drawFruit: function( fruit ) {

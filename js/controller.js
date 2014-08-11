@@ -7,8 +7,9 @@ function Game(){
   this.view = new View();
   this.snake = new Snake();
   this.score = 0;
+  this.level = 1;
   this.state = "starting"
-  this.fps = 8;
+  this.fps = 6;
   this.fruit = [];
   this.keys = {
     37: 'Left',
@@ -29,6 +30,7 @@ Game.prototype = {
   play: function(){
 
     if ( this.state == "playing" ) {
+      this.increaseSpeed();
       this.generateFruit();
       this.moveSnake();
       this.gameOverCheck();
@@ -43,9 +45,16 @@ Game.prototype = {
     setTimeout(this.play.bind(this), 1000/this.fps)
   },
 
+  increaseSpeed: function(){
+    if ( this.score/10 >= this.level ) {
+      this.fps ++;
+      this.level ++;
+    }
+  },
+
   renderGame: function(){
     this.view.resetCanvas();
-    this.view.showScore( this.score );
+    this.view.showStats( this.score, this.level );
     this.view.drawSnake( this.snake );
     this.view.drawFruit( this.fruit );
   },
@@ -70,13 +79,13 @@ Game.prototype = {
           break;
         case "over":
           this.reset();
-          // debugger
       }
     }
   },
 
   reset: function(){
     this.score = 0;
+    this.level = 1;
     this.snake = new Snake();
     this.snake.initialize();
     this.view = new View();
@@ -123,12 +132,22 @@ Game.prototype = {
 
       fruit = [x,y]
 
-      if ( !this.snake.collisionCheck( fruit )){
-        this.fruit = fruit;
-      } else {
+      if ( this.onSnake( fruit )) {
         this.generateFruit();
+      } else {
+        this.fruit = fruit;
       }
     }
+  },
+
+  onSnake: function( fruit ){
+    for ( var i = 0; i < this.snake.length; i++ ) {
+      var segment = this.snake.segments[i];
+      if ( segment[0] == fruit[0] && segment[1] == fruit[1] ) {
+        return true
+      }
+    }
+   return false
   },
 
   eatFruit: function(){

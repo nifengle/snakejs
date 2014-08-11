@@ -60,6 +60,7 @@ Snake.prototype = {
   },
 
   collisionCheck: function(){
+
     for (var i = 0; i < this.length - 1; i++) {
       var segX = this.segments[i][0]
       var segY = this.segments[i][1]
