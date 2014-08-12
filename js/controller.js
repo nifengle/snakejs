@@ -1,9 +1,9 @@
-$(document).ready(function(){
+$(document).ready(function() {
   var game = new Game();
   game.initialize();
 });
 
-function Game(){
+function Game() {
   this.view = new View();
   this.snake = new Snake();
   this.score = 0;
@@ -21,50 +21,53 @@ function Game(){
 }
 
 Game.prototype = {
-  initialize: function(){
+  initialize: function() {
     this.bindEvents();
     this.snake.initialize();
     this.play();
   },
 
-  play: function(){
-
-    if ( this.state == "playing" ) {
-      this.increaseSpeed();
-      this.generateFruit();
-      this.moveSnake();
-      this.gameOverCheck();
-      this.renderGame();
-    } else if ( this.state == "starting" ) {
-      this.view.showStartScreen();
-    } else if ( this.state == "over" ) {
-      this.view.endGame();
-      this.view.showStartScreen();
+  play: function() {
+    switch ( this.state ) {
+      case "playing":
+        this.increaseSpeed();
+        this.generateFruit();
+        this.moveSnake();
+        this.gameOverCheck();
+        this.renderGame();
+        break;
+      case "starting":
+        this.view.showStartScreen();
+        break;
+      case "over":
+        this.view.endGame();
+        this.view.showStartScreen();
+        break;
     }
 
-    setTimeout(this.play.bind(this), 1000/this.fps)
+    setTimeout( this.play.bind(this), 1000/this.fps )
   },
 
-  increaseSpeed: function(){
+  increaseSpeed: function() {
     if ( this.score/10 >= this.level ) {
       this.fps ++;
       this.level ++;
     }
   },
 
-  renderGame: function(){
+  renderGame: function() {
     this.view.resetCanvas();
     this.view.showStats( this.score, this.level );
     this.view.drawSnake( this.snake );
     this.view.drawFruit( this.fruit );
   },
 
-  bindEvents: function(){
+  bindEvents: function() {
     $(document).on('keydown', this.setDirection.bind( this ));
     $(document).on('keydown', this.spaceEvent.bind(this));
   },
 
-  spaceEvent: function( event ){
+  spaceEvent: function( event ) {
     if ( event.keyCode == 32 ) {
       event.preventDefault();
       switch ( this.state ){
@@ -83,7 +86,7 @@ Game.prototype = {
     }
   },
 
-  reset: function(){
+  reset: function() {
     this.score = 0;
     this.level = 1;
     this.snake = new Snake();
@@ -93,7 +96,7 @@ Game.prototype = {
     this.state = "playing";
   },
 
-  setDirection: function( event ){
+  setDirection: function( event ) {
     var direction = this.keys[event.keyCode];
 
     if ( this.state == "playing" && this.lastKey!= direction && direction ) {
@@ -102,7 +105,7 @@ Game.prototype = {
     }
   },
 
-  moveSnake: function( direction ){
+  moveSnake: function( direction ) {
     this.snake.move( direction )
     this.eatFruit();
   },
@@ -113,7 +116,7 @@ Game.prototype = {
     }
   },
 
-  collisionCheck: function(){
+  collisionCheck: function() {
     return this.snake.headX <= 0 ||
     this.snake.headX + 40 > this.view.canvas.width ||
     this.snake.headY <= 0 ||
@@ -121,7 +124,7 @@ Game.prototype = {
     this.snake.collisionCheck();
   },
 
-  generateFruit: function(){
+  generateFruit: function() {
     if ( this.fruit.length == 0 ) {
       var x = Math.floor( ((Math.random() * 480) + 1) / 20 ) * 20
       var y = Math.floor( ((Math.random() * 480) + 1) / 20 ) * 20
@@ -140,9 +143,10 @@ Game.prototype = {
     }
   },
 
-  onSnake: function( fruit ){
+  onSnake: function( fruit ) {
     for ( var i = 0; i < this.snake.length; i++ ) {
       var segment = this.snake.segments[i];
+
       if ( segment[0] == fruit[0] && segment[1] == fruit[1] ) {
         return true
       }
@@ -150,10 +154,10 @@ Game.prototype = {
    return false
   },
 
-  eatFruit: function(){
+  eatFruit: function() {
     var snakeHead = [this.snake.headX, this.snake.headY]
 
-    if (snakeHead[0] == this.fruit[0] && snakeHead[1] == this.fruit[1]){
+    if ( snakeHead[0] == this.fruit[0] && snakeHead[1] == this.fruit[1] ) {
       this.fruit = []
       this.score ++
       this.snake.grow();

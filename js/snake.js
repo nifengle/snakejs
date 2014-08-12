@@ -9,25 +9,23 @@ function Snake(){
     Right: 3,
     Opposite: [1,0,3,2]
   };
-  this.previousDirection = 2;
   this.currentDirection = 3;
   this.length = 8;
 }
 
 Snake.prototype = {
-  initialize: function(){
+  initialize: function() {
     for ( var i = 0; i < this.length; i++ ) {
       var x = (i * 20) + 20;
       this.segments.push( [x, this.headY] );
     }
   },
 
-  move: function( newDirection ){
+  move: function( newDirection ) {
 
     var newDirection = newDirection ? this.directions[newDirection] : this.currentDirection;
 
     if ( this.validMove( newDirection ) ) {
-      this.previousDirection = this.currentDirection;
       this.currentDirection = newDirection;
     }
 
@@ -36,10 +34,10 @@ Snake.prototype = {
   },
 
   validMove: function( newDirection ) {
-    return newDirection != this.directions.Opposite[this.currentDirection] && newDirection != this.currentDirection;
+    return newDirection != this.directions.Opposite[this.currentDirection] && newDirection != this.currentDirection
   },
 
-  setHead: function(){
+  setHead: function() {
     switch ( this.currentDirection ) {
       case 3:
         this.headX += 20;
@@ -56,12 +54,12 @@ Snake.prototype = {
     }
 
     this.segments.shift();
-    this.segments.push( [this.headX, this.headY]);
+    this.segments.push( [this.headX, this.headY] );
   },
 
-  collisionCheck: function(){
+  collisionCheck: function() {
 
-    for (var i = 0; i < this.length - 1; i++) {
+    for ( var i = 0; i < this.length - 1; i++ ) {
       var segX = this.segments[i][0]
       var segY = this.segments[i][1]
 
@@ -72,8 +70,8 @@ Snake.prototype = {
     return false
   },
 
-  grow: function(){
-    this.segments.unshift([]);
+  grow: function() {
+    this.segments.unshift( [] );
     this.length ++
   }
 }
